@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using TestAPI.Data;
@@ -16,50 +13,48 @@ namespace TestAPI.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly ApplicationDBContext _context;
 
-        public DepartmentController(IConfiguration configuration, ApplicationDBContext context)
+        public EmployeeController(ApplicationDBContext context)
         {
-            _configuration = configuration;
             this._context = context;
         }
 
         /// <summary>
-        /// Obtiene el listado de departamentos registrados
+        /// Obtiene el listado de empleados registrados
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Department> Get()
+        public IEnumerable<Employee> Get()
         {
-            return _context.Department.ToList();
+            return _context.Employee.ToList();
         }
 
         /// <summary>
-        /// Obtiene un departamento especifico
+        /// Obtiene un empleado especifico
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public Department Get(int id)
+        public Employee Get(int id)
         {
-            var department = _context.Department.Find(id);
-            return department;
+            var employee = _context.Employee.Find(id);
+            return employee;
         }
 
         /// <summary>
-        /// Insertamos un departamento
+        /// Insertamos un empleado
         /// </summary>
-        /// <param name="department"></param>
+        /// <param name="employee"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Post(Department department)
+        public ActionResult Post(Employee employee)
         {
             try
             {
-                _context.Department.Add(department);
+                _context.Employee.Add(employee);
                 _context.SaveChanges();
                 return Ok();
             }
@@ -70,17 +65,17 @@ namespace TestAPI.Controllers
         }
 
         /// <summary>
-        /// Modificamos un departamento
+        /// Modificamos un empleado
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="department"></param>
+        /// <param name="employee"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public ActionResult Put(int id, Department department)
+        public ActionResult Put(int id, Employee employee)
         {
-            if (department.DepartmentId == id)
+            if (employee.EmployeeId == id)
             {
-                _context.Department.Update(department);
+                _context.Employee.Update(employee);
                 _context.SaveChanges();
                 return Ok();
             }
@@ -98,10 +93,10 @@ namespace TestAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Put(int id)
         {
-            var department = _context.Department.Find(id);
-            if (department != null)
+            var employee = _context.Employee.Find(id);
+            if (employee != null)
             {
-                _context.Department.Remove(department);
+                _context.Employee.Remove(employee);
                 _context.SaveChanges();
                 return Ok();
             }
